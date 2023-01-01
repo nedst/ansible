@@ -1,0 +1,29 @@
+/* basic ping command */
+ansible all --key-file ~/.ssh/ansible -i inventory -m ping
+
+in ansible.cfg:
+[defaults]
+inventory = inventory
+private_key_file = ~/.ssh/ansible
+
+command becomes:
+ansible all -m ping
+
+/* list of hosts  */
+ansible all --list-hosts
+
+/*get data about hosts*/
+ansible all -m gather_facts
+
+/*elevated commands with ansible */
+ansible all -m apt -a update_cache=true /fails
+ansible all -m apt -a update_cache=true --become --ask-become-pass
+
+/* Install a package via the apt module */
+ansible all -m apt -a name=vim-nox --become --ask-become-pass
+
+/* Install a package via the apt module, and also make sure it’s the latest version available */
+ansible all -m apt -a "name=snapd state=latest" --become --ask-become-pass
+
+/* Upgrade all the package updates that are available */
+ansible all -m apt -a upgrade=dist --become --ask-become-pass
